@@ -11,6 +11,7 @@ class GetSessionToken
     private $client;
 
     private $sessionToken;
+    private $sessionInitializedClient;
 
     public function __construct(Config $config)
     {
@@ -28,12 +29,12 @@ class GetSessionToken
     public function fetchSessionTokenGlpi($fullSession = false): array
     {
         $clientWithUserToken = $this->client->withOptions(
-                    [
-                        'headers' => [
-                            'Authorization' => 'user_token ' . $this->config->getUserToken(),
-                        ]
-                    ]
-                );
+            [
+                'headers' => [
+                    'Authorization' => 'user_token ' . $this->config->getUserToken(),
+                ]
+            ]
+        );
         if ($fullSession) {
             try {
                 $response = $clientWithUserToken->request(
@@ -47,19 +48,18 @@ class GetSessionToken
                 var_dump($e->getMessage(), $e->getResponse()->getContent(false));
                 throw $e;
             }
-        }
-        else {
+        } else {
             try {
-            $response = $clientWithUserToken->request(
-                'GET',
-                'https://glpi.jt-lab.ch/apirest.php/initSession',
-            );
-            $data = $response->toArray();
-            return $data;
-        } catch (ClientException $e) {
-            var_dump($e->getMessage(), $e->getResponse()->getContent(false));
-            throw $e;
-        }
+                $response = $clientWithUserToken->request(
+                    'GET',
+                    'https://glpi.jt-lab.ch/apirest.php/initSession',
+                );
+                $data = $response->toArray();
+                return $data;
+            } catch (ClientException $e) {
+                var_dump($e->getMessage(), $e->getResponse()->getContent(false));
+                throw $e;
+            }
         }
     }
 
@@ -68,29 +68,47 @@ class GetSessionToken
         $this->sessionToken = $this->fetchSessionTokenGlpi()['session_token'];
     }
 
-    public function request(string $string, string $string1)
+    public function getSessionInitializedClient()
     {
-        // $client = $this->getSessionInitializedClient();
         // Check if session is already set
-        if (isset($this->sessionToken)) {
-            $this->client->withOptions(
-                    [
-                        'headers' => [
-                            'session_token' => $this->sessionToken,
-                        ]
+        if ($this->sessionToken) {
+            $this->sessionInitializedClient = $this->client->withOptions(
+                [
+                    'headers' => [
+                        'Session-Token' => $this->sessionToken,
                     ]
-                );
-        }
-        // if not, initialize it (with fetchSessionTokenGlpi())
+                ]
+            );
+            return $this->sessionInitializedClient;
+        } // if not, initialize it (with fetchSessionTokenGlpi())
         else {
             $this->setTokenSession();
+            $this->sessionInitializedClient = $this->client->withOptions(
+                [
+                    'headers' => [
+                        'Session-Token' => $this->sessionToken,
+                    ]
+                ]
+            );
+            return $this->sessionInitializedClient;
         }
+    }
+
+    public function request(string $string, string $string1)
+    {
+        $this->getSessionInitializedClient();
         // then make the api call
-        $response = $this->client->request(
+        try {
+            $response = $this->sessionInitializedClient->request(
             $string,
             $string1
         );
-        return $response;
+        $data = $response->toArray();
+        return $data;
+        } catch (ClientException $e) {
+            var_dump($e->getMessage(), $e->getResponse()->getContent(false));
+            throw $e;
+        }
     }
 
 
