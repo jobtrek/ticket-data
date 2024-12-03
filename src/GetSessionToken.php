@@ -91,11 +91,11 @@ class GetSessionToken
         )->toArray();
     }
 
-    public function request(string $string, string $string1)
+    public function request(string $method, string $url): array
     {
         for ($i = 0; $i < 3; $i++) {
             try {
-                return $this->executeRequest($string, $string1
+                return $this->executeRequest($method, $url
                 );
             } catch (ClientException $e) {
                 if ($e->getResponse()->getStatusCode() === 401) {
