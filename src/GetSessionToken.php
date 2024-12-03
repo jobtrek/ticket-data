@@ -2,8 +2,13 @@
 
 namespace TicketData;
 
+use Exception;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class GetSessionToken
@@ -91,12 +96,17 @@ class GetSessionToken
         )->toArray();
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function request(string $method, string $url): array
     {
         for ($i = 0; $i < 3; $i++) {
             try {
-                return $this->executeRequest($method, $url
-                );
+                return $this->executeRequest($method, $url);
             } catch (ClientException $e) {
                 if ($e->getResponse()->getStatusCode() === 401) {
                     $this->setTokenSession();
@@ -106,6 +116,6 @@ class GetSessionToken
                 }
             }
         }
+        throw new Exception('Too many retries');
     }
-
 }
