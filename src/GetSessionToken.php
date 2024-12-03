@@ -2,16 +2,21 @@
 
 namespace TicketData;
 
+use Exception;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class GetSessionToken
 {
-    private $config;
-    private $client;
+    private Config $config;
+    private HttpClientInterface $client;
 
     private $sessionToken;
-    private $sessionInitializedClient;
 
     public function __construct(Config $config)
     {
@@ -26,7 +31,7 @@ class GetSessionToken
         );
     }
 
-    public function fetchSessionTokenGlpi($fullSession = false): array
+    public function fetchSessionTokenGlpi(bool $fullSession = false): array
     {
         $clientWithUserToken = $this->client->withOptions(
             [
@@ -68,48 +73,49 @@ class GetSessionToken
         $this->sessionToken = $this->fetchSessionTokenGlpi()['session_token'];
     }
 
-    public function getSessionInitializedClient()
+    public function getSessionInitializedClient(): HttpClientInterface
     {
         // Check if session is already set
-        if ($this->sessionToken) {
-            $this->sessionInitializedClient = $this->client->withOptions(
-                [
-                    'headers' => [
-                        'Session-Token' => $this->sessionToken,
-                    ]
-                ]
-            );
-            return $this->sessionInitializedClient;
-        } // if not, initialize it (with fetchSessionTokenGlpi())
-        else {
+        if (!$this->sessionToken) {
             $this->setTokenSession();
-            $this->sessionInitializedClient = $this->client->withOptions(
-                [
-                    'headers' => [
-                        'Session-Token' => $this->sessionToken,
-                    ]
+        } // if not, initialize it (with fetchSessionTokenGlpi())
+        return $this->client->withOptions(
+            [
+                'headers' => [
+                    'Session-Token' => $this->sessionToken,
                 ]
-            );
-            return $this->sessionInitializedClient;
-        }
-    }
-
-    public function request(string $string, string $string1)
-    {
-        $this->getSessionInitializedClient();
-        // then make the api call
-        try {
-            $response = $this->sessionInitializedClient->request(
-            $string,
-            $string1
+            ]
         );
-        $data = $response->toArray();
-        return $data;
-        } catch (ClientException $e) {
-            var_dump($e->getMessage(), $e->getResponse()->getContent(false));
-            throw $e;
-        }
     }
 
+    public function executeRequest(string $method, string $url): array
+    {
+        return $this->getSessionInitializedClient()->request(
+            $method,
+            $url
+        )->toArray();
+    }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function request(string $method, string $url): array
+    {
+        for ($i = 0; $i < 3; $i++) {
+            try {
+                return $this->executeRequest($method, $url);
+            } catch (ClientException $e) {
+                if ($e->getResponse()->getStatusCode() === 401) {
+                    $this->setTokenSession();
+                } else {
+                    var_dump($e->getMessage(), $e->getResponse()->getContent(false));
+                    throw $e;
+                }
+            }
+        }
+        throw new Exception('Too many retries');
+    }
 }
