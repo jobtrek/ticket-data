@@ -44,7 +44,7 @@ class GetSessionToken
             try {
                 $response = $clientWithUserToken->request(
                     'GET',
-                    'https://glpi.jt-lab.ch/apirest.php/initSession?get_full_session=true',
+                    'https://glpi.in.jt-lab.ch/apirest.php/initSession?get_full_session=true',
                 );
 
                 $data = $response->toArray();
@@ -57,7 +57,7 @@ class GetSessionToken
             try {
                 $response = $clientWithUserToken->request(
                     'GET',
-                    'https://glpi.jt-lab.ch/apirest.php/initSession',
+                    'https://glpi.in.jt-lab.ch/apirest.php/initSession',
                 );
                 $data = $response->toArray();
                 return $data;

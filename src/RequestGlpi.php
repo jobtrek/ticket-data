@@ -5,7 +5,7 @@ namespace TicketData;
 
 class RequestGlpi
 {
-    public $session;
+    public GetSessionToken $session;
 
     public function __construct(GetSessionToken $getSessionToken)
     {
@@ -16,15 +16,15 @@ class RequestGlpi
     {
         return $this->session->request(
             'GET',
-            'https://glpi.jt-lab.ch/apirest.php/Computer/' . $id,
+            'https://glpi.in.jt-lab.ch/apirest.php/Computer/' . $id,
         );
     }
 
-    public function fetchAllComputer(): array
+    public function fetchAllComputer($range = 15): array
     {
         return $this->session->request(
             'GET',
-            'https://glpi.jt-lab.ch/apirest.php/Computer',
+            'https://glpi.in.jt-lab.ch/apirest.php/Computer/?range=0-' . $range,
         );
     }
 }
