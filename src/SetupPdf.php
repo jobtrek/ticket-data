@@ -2,7 +2,6 @@
 
 namespace TicketData;
 
-use PhpParser\Node\Expr\Cast\Object_;
 use TCPDF;
 
 class SetupPdf extends TCPDF
