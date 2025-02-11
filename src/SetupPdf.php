@@ -10,7 +10,6 @@ use TCPDF;
 
 class SetupPdf extends TCPDF
 {
-    private Sticker $sticker;
     public int $number_of_stickers_per_type = 1;
     public int $size_of_datamatrix = 20;
     public int $top_margin;
@@ -18,10 +17,9 @@ class SetupPdf extends TCPDF
     public int $right_margin;
     public int $space;
 
-    public function __construct(Sticker $sticker, $orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8', $diskcache = false, $left_margin = 0, $right_margin = 0, $top_margin = 0,$space = 0)
+    public function __construct($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8', $diskcache = false, $left_margin = 0, $right_margin = 0, $top_margin = 0,$space = 0)
     {
         parent::__construct();
-        $this->sticker = $sticker;
         
         $this->left_margin = $left_margin;
         $this->right_margin = $right_margin;
