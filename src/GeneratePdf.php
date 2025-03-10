@@ -11,9 +11,10 @@ class GeneratePdf
         $this->setupPdf = $setupPdf;
     }
 
-    public function generatePdfAllComputers(): void
+    public function generatePdfAllComputers($arrayOfValue): void
     {
-        $this->setupPdf->setPdf($this->setupPdf);
+        $this->setupPdf->checkDataMatrix($arrayOfValue);
+        $this->setupPdf->setPdf($arrayOfValue);
         $this->setupPdf->Output(__DIR__ . "/ec-pc-labels.pdf", 'F');
     }
 }

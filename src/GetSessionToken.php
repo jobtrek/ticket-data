@@ -16,7 +16,7 @@ class GetSessionToken
     private Config $config;
     private HttpClientInterface $client;
 
-    private $sessionToken;
+    private string $sessionToken;
 
     public function __construct(Config $config)
     {
@@ -46,9 +46,7 @@ class GetSessionToken
                     'GET',
                     'https://glpi.in.jt-lab.ch/apirest.php/initSession?get_full_session=true',
                 );
-
-                $data = $response->toArray();
-                return $data;
+                return $response->toArray();
             } catch (ClientException $e) {
                 var_dump($e->getMessage(), $e->getResponse()->getContent(false));
                 throw $e;
@@ -59,8 +57,7 @@ class GetSessionToken
                     'GET',
                     'https://glpi.in.jt-lab.ch/apirest.php/initSession',
                 );
-                $data = $response->toArray();
-                return $data;
+                return $response->toArray();
             } catch (ClientException $e) {
                 var_dump($e->getMessage(), $e->getResponse()->getContent(false));
                 throw $e;
