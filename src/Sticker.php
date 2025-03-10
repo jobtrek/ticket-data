@@ -2,29 +2,25 @@
 
 namespace TicketData;
 
-class Sticker
+use RuntimeException;
+
+readonly class Sticker
 {
     private int $width;
-    private float $height;
-    private mixed $content;
-    const int WIDTH =20;
-    const float HEIGHT = 20;
-    
-
+    private int $height;
     
     public function __construct(
-        int $width = self::WIDTH,
-        float $height = self::HEIGHT,
+        int $width= 45,
+        int $height = 20,
     )
     {
+        if ($height > $width) {
+            throw new RuntimeException("The height must be less than the width");
+        }
+        
         $this->width = $width;
         $this->height = $height;
-    }
-
-    public function generateSticker($x, $y, $data): void {
-        $this->setWidth($x);
-        $this->setHeight($y);
-        $this->setContent($data);
+        
     }
 
     public function getWidth(): int
@@ -32,29 +28,9 @@ class Sticker
         return $this->width;
     }
 
-    public function setWidth(int $width): void
-    {
-        $this->width = $width;
-    }
-
-    public function getHeight(): float
+    public function getHeight(): int
     {
         return $this->height;
-    }
-
-    public function setHeight(float $height): void
-    {
-        $this->height = $height;
-    }
-    
-    public function getContent(): mixed
-    {
-        return $this->content;
-    }
-    
-    public function setContent(mixed $content): void
-    {
-        $this->content = $content;
     }
     
 }
