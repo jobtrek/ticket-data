@@ -48,7 +48,6 @@ class GetSessionToken
                 );
                 return $response->toArray();
             } catch (ClientException $e) {
-                var_dump($e->getMessage(), $e->getResponse()->getContent(false));
                 throw $e;
             }
         } else {
@@ -59,7 +58,6 @@ class GetSessionToken
                 );
                 return $response->toArray();
             } catch (ClientException $e) {
-                var_dump($e->getMessage(), $e->getResponse()->getContent(false));
                 throw $e;
             }
         }
@@ -108,7 +106,6 @@ class GetSessionToken
                 if ($e->getResponse()->getStatusCode() === 401) {
                     $this->setTokenSession();
                 } else {
-                    var_dump($e->getMessage(), $e->getResponse()->getContent(false));
                     throw $e;
                 }
             }
