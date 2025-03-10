@@ -11,10 +11,9 @@ class AdaptRequest
         $this->requestGlpi = $requestGlpi;
     }
 
-    public function sortValueComputers() : array
+    public function sortValueComputers($array) : array
     {
-        $computers = $this->requestGlpi->fetchAllComputer();
-
+        
         return array_map(function ($array) {
             $realNameContact = explode(".", $array['contact']);
             return [
@@ -22,7 +21,7 @@ class AdaptRequest
                 'contact' => ucfirst($realNameContact[0]),
                 'uuid' => $array['uuid'],
             ];
-        }, $computers);
+        }, $array);
     }
 
 }
