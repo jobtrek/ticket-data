@@ -34,5 +34,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'glpi' => [
+        'url' => env('GLPI_URL'),
+        'user_token' => env('USER_TOKEN'),
+        'app_token' => env('APP_TOKEN'),
+    ],
 
 ];
