@@ -21,7 +21,14 @@ services:
             - '.:/var/www/html'
         networks:
             - sail
-        depends_on: {  }
+        depends_on:
+            - memcached
+    memcached:
+        image: 'memcached:alpine'
+        ports:
+            - '${FORWARD_MEMCACHED_PORT:-11211}:11211'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
