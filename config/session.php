@@ -6,7 +6,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Session Driver
+    | Default TokenService Driver
     |--------------------------------------------------------------------------
     |
     | This option determines the default session driver that is utilized for
@@ -22,7 +22,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Lifetime
+    | TokenService Lifetime
     |--------------------------------------------------------------------------
     |
     | Here you may specify the number of minutes that you wish the session
@@ -38,7 +38,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Encryption
+    | TokenService Encryption
     |--------------------------------------------------------------------------
     |
     | This option allows you to easily specify that all of your session data
@@ -51,7 +51,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session File Location
+    | TokenService File Location
     |--------------------------------------------------------------------------
     |
     | When utilizing the "file" session driver, the session files are placed
@@ -64,7 +64,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Database Connection
+    | TokenService Database Connection
     |--------------------------------------------------------------------------
     |
     | When using the "database" or "redis" session drivers, you may specify a
@@ -77,7 +77,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Database Table
+    | TokenService Database Table
     |--------------------------------------------------------------------------
     |
     | When using the "database" session driver, you may specify the table to
@@ -90,7 +90,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Cache Store
+    | TokenService Cache Store
     |--------------------------------------------------------------------------
     |
     | When using one of the framework's cache driven session backends, you may
@@ -105,7 +105,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Sweeping Lottery
+    | TokenService Sweeping Lottery
     |--------------------------------------------------------------------------
     |
     | Some session drivers must manually sweep their storage location to get
@@ -118,7 +118,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Cookie Name
+    | TokenService Cookie Name
     |--------------------------------------------------------------------------
     |
     | Here you may change the name of the session cookie that is created by
@@ -134,7 +134,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Cookie Path
+    | TokenService Cookie Path
     |--------------------------------------------------------------------------
     |
     | The session cookie path determines the path for which the cookie will
@@ -147,7 +147,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Cookie Domain
+    | TokenService Cookie Domain
     |--------------------------------------------------------------------------
     |
     | This value determines the domain and subdomains the session cookie is

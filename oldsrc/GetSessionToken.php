@@ -25,7 +25,7 @@ class GetSessionToken
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'App-Token' => $this->config->getAppToken(),
+                    'App-TokenService' => $this->config,
                 ]
             ]
         );
@@ -36,7 +36,7 @@ class GetSessionToken
         $clientWithUserToken = $this->client->withOptions(
             [
                 'headers' => [
-                    'Authorization' => 'user_token ' . $this->config->getUserToken(),
+                    'Authorization' => 'user_token ' . $this->config,
                 ]
             ]
         );
@@ -50,7 +50,6 @@ class GetSessionToken
                 $data = $response->toArray();
                 return $data;
             } catch (ClientException $e) {
-                var_dump($e->getMessage(), $e->getResponse()->getContent(false));
                 throw $e;
             }
         } else {
@@ -62,7 +61,6 @@ class GetSessionToken
                 $data = $response->toArray();
                 return $data;
             } catch (ClientException $e) {
-                var_dump($e->getMessage(), $e->getResponse()->getContent(false));
                 throw $e;
             }
         }
@@ -82,7 +80,7 @@ class GetSessionToken
         return $this->client->withOptions(
             [
                 'headers' => [
-                    'Session-Token' => $this->sessionToken,
+                    'TokenService-TokenService' => $this->sessionToken,
                 ]
             ]
         );

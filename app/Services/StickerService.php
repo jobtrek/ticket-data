@@ -1,27 +1,29 @@
 <?php
 
-namespace TicketData;
+namespace App\Services;
 
-class Sticker
+class StickerService
 {
-    private int $width;
-    private float $height;
-    private mixed $content;
-    const int WIDTH =20;
-    const float HEIGHT = 20;
-    
+    const int WIDTH = 20;
 
-    
+    const float HEIGHT = 20;
+
+    private int $width;
+
+    private float $height;
+
+    private mixed $content;
+
     public function __construct(
         int $width = self::WIDTH,
         float $height = self::HEIGHT,
-    )
-    {
+    ) {
         $this->width = $width;
         $this->height = $height;
     }
 
-    public function generateSticker($x, $y, $data): void {
+    public function generateSticker($x, $y, $data): void
+    {
         $this->setWidth($x);
         $this->setHeight($y);
         $this->setContent($data);
@@ -46,15 +48,14 @@ class Sticker
     {
         $this->height = $height;
     }
-    
+
     public function getContent(): mixed
     {
         return $this->content;
     }
-    
+
     public function setContent(mixed $content): void
     {
         $this->content = $content;
     }
-    
 }

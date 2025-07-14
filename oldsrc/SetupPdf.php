@@ -2,9 +2,6 @@
 
 namespace TicketData;
 
-use InvalidArgumentException;
-use PhpParser\Node\Expr\Variable;
-use PHPStan\Analyser\RicherScopeGetTypeHelper;
 use Ramsey\Uuid\Uuid;
 use TCPDF;
 
