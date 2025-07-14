@@ -6,27 +6,22 @@ use Dotenv\Dotenv;
 
 class Config
 {
-    public mixed $userToken;
-    public mixed $appToken;
+    public mixed $userToken {
+        get {
+            return $this->userToken;
+        }
+    }
+    public mixed $appToken {
+        get {
+            return $this->appToken;
+        }
+    }
 
     public function __construct()
     {
-        $dotenv = Dotenv::createImmutable(__DIR__. '/../');
-        $dotenv->load();
-        $this->userToken = $_ENV['USER_TOKEN'];
-        $this->appToken = $_ENV['APP_TOKEN'];
+        $this->userToken = config('services.glpi.user_token');
+        $this->appToken = config('services.glpi.app_token');
     }
-
-    public function getUserToken(): string
-    {
-        return $this->userToken;
-    }
-
-    public function getAppToken(): string
-    {
-        return $this->appToken;
-    }
-
 
 
 }
