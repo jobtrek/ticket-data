@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use App\Services\GlpiServices;
-use Illuminate\Contracts\Foundation\Application;
+use App\Services\TokenService;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,26 +16,28 @@ class GlpiServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(GlpiServices::class, function (Application $app) {
-            return new GlpiServices();
+        $this->app->singleton(TokenService::class, function () {
+            return new TokenService();
         });
     }
 
     /**
      * Bootstrap services.
+     * @throws ConnectionException
      */
-    public function boot(): void
+    public function boot(TokenService $tokenService): void
     {
+        $tokenService->cacheSessionToken();
+        
         Http::macro('glpi', function () {
             
             return Http::withHeaders([
-                
                 'Content-Type' => 'application/json',
-                'Session-Token' => app(GlpiServices::class)->getSessionToken(),
-                'App-Token' => config('services.glpi.app_token')
-                
-            ])->baseUrl('https://glpi.in.jt-lab.ch/apirest.php/');
+                'Session-Token' => Cache::get('session_token'),
+                'App-Token' => config('services.glpi.app_token'),
+            ])->baseUrl(config('services.glpi.url'));
             
-        });
+    });
+        
     }
 }
