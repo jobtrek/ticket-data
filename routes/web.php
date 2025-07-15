@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/token', [TokenService::class, 'getSessionToken']);
 Route::resource('/computers', ComputerController::class)->middleware(EnsureTokenIsSetup::class);
-Route::get('/', [DataMatrixController::class, 'index']);
+Route::get('/data', [DataMatrixController::class, 'index']);
 Route::post('/data', [DataMatrixController::class, 'cacheNewNumber'])->name('data');
 Route::post('/deleteonedata', [DataMatrixController::class, 'deleteOneNumber'])->name('deleteonedata');
 Route::post('/generatedata', [DataMatrixController::class, 'generateDataMatrix'])->name('generatedata');
